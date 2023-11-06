@@ -1,5 +1,11 @@
 package com.green_steam;
 
+import com.google.protobuf.ByteString;
+import com.google.protobuf.InvalidProtocolBufferException;
+import com.green_steam.objects.Game;
+import com.green_steam.objects.Publisher;
+import com.green_steam.proto.MessageOuterClass.Message;;
+
 public class GreenSteamProxy {
     int requestiId = 0;
 
@@ -31,7 +37,12 @@ public class GreenSteamProxy {
 		// (4) Retorna reposta desempacotada
 	}
 
-	public byte[] doOperation(String objectRef, String method, byte[] args) {
+	public Publisher getPublisher(Game game){
+		Publisher publisher = Publisher.parseFrom(doOperation("Publisher", "checar", game.toByteArray()));
+		return publisher;
+	}
+
+	public byte[] doOperation(String objectRef, String method, byte[] args) throws InvalidProtocolBufferException {
 
 		byte[] data = empacotaMensagem(objectRef, method, args);
 
@@ -45,19 +56,25 @@ public class GreenSteamProxy {
 
 	}
 
-	public void finaliza() {
-		udpClient.finaliza();
-	}
-
 	private byte[] empacotaMensagem(String objectRef, String method, byte[] args) {
 
 		// empacota a Mensagem de requisicao
+		Message message = Message.newBuilder()
+		.setType(0) // Replace with your desired type value
+		.setId(0) // Replace with your desired id value
+		.setObfReference(objectRef)
+		.setMethodId(method)
+		.setArguments(ByteString.copyFrom(args))
+		.build();
+
+        return message.toByteArray();
 
 	}
 
-	private Message desempacotaMensagem(byte[] resposta) {
+	private Message desempacotaMensagem(byte[] resposta) throws InvalidProtocolBufferException {
 
 		// desempacota a mensagem de resposta
+		return Message.parseFrom(resposta);
 
 	}
 
