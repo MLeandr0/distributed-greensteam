@@ -13,6 +13,7 @@ public class GreenSteamProxy {
 	// através de um nome de domínio (ex: www.ufc.br)
 	UDPClient udpClient = new UDPClient("localhost", 7896);
 
+	/*
 	public AddressBook list(String nomeAgenda) {
 		// (1) Empacota argumentos de entrada (ex: nomeAgenda)
 		// (2) Chama doOperation
@@ -36,8 +37,9 @@ public class GreenSteamProxy {
 		// (3) Desempacota argumento de resposta (retorno de doOperation)
 		// (4) Retorna reposta desempacotada
 	}
+	*/
 
-	public Publisher getPublisher(Game game){
+	public Publisher getPublisher(Game game) throws InvalidProtocolBufferException{
 		Publisher publisher = Publisher.parseFrom(doOperation("Publisher", "checar", game.toByteArray()));
 		return publisher;
 	}
