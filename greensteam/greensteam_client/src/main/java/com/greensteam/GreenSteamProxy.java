@@ -1,10 +1,10 @@
-package com.green_steam;
+package com.greensteam;
 
 import com.google.protobuf.ByteString;
 import com.google.protobuf.InvalidProtocolBufferException;
-import com.green_steam.objects.Game;
-import com.green_steam.objects.Publisher;
-import com.green_steam.proto.MessageOuterClass.Message;;
+import com.greensteam.objects.Game;
+import com.greensteam.objects.Publisher;
+import com.greensteam.proto.MessageOuterClass.Message;;
 
 public class GreenSteamProxy {
     int requestiId = 0;

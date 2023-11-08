@@ -1,4 +1,4 @@
-package com.green_steam;
+package com.greensteam;
 
 import java.io.IOException;
 import java.net.*;

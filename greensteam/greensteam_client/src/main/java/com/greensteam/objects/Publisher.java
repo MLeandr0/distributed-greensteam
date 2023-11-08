@@ -1,4 +1,4 @@
-package com.green_steam.objects;
+package com.greensteam.objects;
 
 public class Publisher {
 

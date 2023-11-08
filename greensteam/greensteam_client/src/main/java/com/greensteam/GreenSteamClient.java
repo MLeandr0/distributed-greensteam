@@ -1,11 +1,11 @@
-package com.green_steam;
+package com.greensteam;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-import com.green_steam.objects.Game;
-import com.green_steam.objects.Publisher;
+import com.greensteam.objects.Game;
+import com.greensteam.objects.Publisher;
 
 public class GreenSteamClient {
     
