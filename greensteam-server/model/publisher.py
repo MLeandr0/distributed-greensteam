@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from game import Game
+from model.game import Game
 
 @dataclass
 class Publisher:

@@ -1,5 +1,3 @@
-import os
-import greenssteam_pb2
 from model.game import Game
 from model.publisher import Publisher
 from model.user import User
