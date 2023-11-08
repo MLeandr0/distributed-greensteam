@@ -1,6 +1,5 @@
 import socket
 import despachante
-import greenssteam_pb2
 
 class UDPServer:
     def __init__(self, server_port):
@@ -29,17 +28,21 @@ class Connection:
     def run(self):
         try:
             while True:
-                requisicao = self.desempacota_requisicao(self.incoming_data)
-                resultado = self.despachante.selecionaEqueleto(requisicao)
-                response_data = self.empacota_resposta(resultado, requisicao.request_id)
-                self.send_reply(response_data)
+                requisicao = self.get_request()
+                resultado = self.despachante.dispatch(requisicao)
+                self.send_reply(resultado)
 
         except Exception as e:
             print(f"Connection: {e}")
 
+    def get_request(self):
+        data = self.server_socket.recv(1024).decode()
+        return data
+
+
     def send_reply(self, response_data):
         # Implemente a lógica para enviar uma resposta ao cliente
-        self.server_socket.sendto(response_data, self.client_address)
+        self.server_socket.send(response_data.encode(), self.client_address)
 
 if __name__ == "__main__":
     server_port = 9090

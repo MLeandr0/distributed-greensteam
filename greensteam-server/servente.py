@@ -1,25 +1,8 @@
 import os
-import greenssteam_pb2   
-
-class Game:
-    def __init__(self, name, description, downloadQuantity, reviewsPercentage):
-        self.name = name
-        self.description = description
-        self.downloadQuantity = downloadQuantity
-        self.reviewsPercentage = reviewsPercentage
-
-class User:
-    def __init__(self, name, bio, library, achievements):
-        self.name = name
-        self.bio = bio
-        self.library = library
-        self.achievements = achievements
-
-class Publisher:
-    def __init__(self, name, followers, games):
-        self.name = name
-        self.followers = followers
-        self.games = games
+import greenssteam_pb2
+from model.game import Game
+from model.publisher import Publisher
+from model.user import User
 
 game1 = Game("Jogo 1", "Descrição do Jogo 1", 1000, 90)
 game2 = Game("Jogo 2", "Descrição do Jogo 2", 500, 85)
