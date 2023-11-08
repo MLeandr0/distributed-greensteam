@@ -2,16 +2,20 @@ package com.greensteam;
 
 import com.google.protobuf.ByteString;
 import com.google.protobuf.InvalidProtocolBufferException;
-import com.greensteam.objects.Game;
-import com.greensteam.objects.Publisher;
-import com.greensteam.proto.MessageOuterClass.Message;;
+//import com.greensteam.objects.Game;
+//import com.greensteam.objects.Publisher;
+import com.greensteam.proto.MessageOuterClass.Message;
+import com.greensteam.proto.MessageOuterClass.Game;
+import com.greensteam.proto.MessageOuterClass.Publisher;
+import com.greensteam.proto.MessageOuterClass.Game.Builder;
 
 public class GreenSteamProxy {
     int requestiId = 0;
 
 	// O ideal seria solicitar os dados de conexao ao cliente
 	// através de um nome de domínio (ex: www.ufc.br)
-	UDPClient udpClient = new UDPClient("localhost", 7896);
+	//UDPClient udpClient = new UDPClient("localhost", 7896);
+	UDPClient udpClient = new UDPClient("localhost", 9090);
 
 	/*
 	public AddressBook list(String nomeAgenda) {
@@ -39,8 +43,10 @@ public class GreenSteamProxy {
 	}
 	*/
 
-	public Publisher getPublisher(Game game) throws InvalidProtocolBufferException{
-		Publisher publisher = Publisher.parseFrom(doOperation("Publisher", "checar", game.toByteArray()));
+	public Publisher getPublisher(Builder game) throws InvalidProtocolBufferException{
+		
+		Publisher publisher = Publisher.parseFrom(doOperation("Publisher", "checar", game.build().toByteArray()));
+		
 		return publisher;
 	}
 

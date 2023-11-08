@@ -6,7 +6,7 @@ class UDPServer:
     def __init__(self, server_port):
         self.server_port = server_port
         self.server_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-        self.server_socket.bind(("0.0.0.0", self.server_port))
+        self.server_socket.bind(("localhost", self.server_port))
         print("Servidor aguardando conexões na porta", self.server_port)
 
     def start(self):
