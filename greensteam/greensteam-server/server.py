@@ -37,17 +37,6 @@ class Connection:
         except Exception as e:
             print(f"Connection: {e}")
 
-    def desempacota_requisicao(self, data):
-        request = greenssteam_pb2.Request()
-        request.ParseFromString(data)
-        return request
-
-    def empacota_resposta(self, resultado, request_id):
-        response = greenssteam_pb2.Reply()
-        response.result = resultado
-        response.request_id = request_id 
-        return response.SerializeToString()
-
     def send_reply(self, response_data):
         # Implemente a lógica para enviar uma resposta ao cliente
         self.server_socket.sendto(response_data, self.client_address)
