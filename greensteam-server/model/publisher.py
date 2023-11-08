@@ -5,4 +5,4 @@ from model.game import Game
 class Publisher:
     name: str
     followers: int
-    library: list[Game]
+    games: list[Game]

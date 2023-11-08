@@ -5,7 +5,7 @@ import com.google.protobuf.InvalidProtocolBufferException;
 //import com.greensteam.objects.Game;
 //import com.greensteam.objects.Publisher;
 import com.greensteam.proto.MessageOuterClass.Message;
-import com.greensteam.proto.MessageOuterClass.Game;
+//import com.greensteam.proto.MessageOuterClass.Game;
 import com.greensteam.proto.MessageOuterClass.Publisher;
 import com.greensteam.proto.MessageOuterClass.Game.Builder;
 
@@ -45,13 +45,12 @@ public class GreenSteamProxy {
 
 	public Publisher getPublisher(Builder game) throws InvalidProtocolBufferException{
 		
-		Publisher publisher = Publisher.parseFrom(doOperation("Publisher", "checar", game.build().toByteArray()));
+		Publisher publisher = Publisher.parseFrom(doOperation("Publisher", "get_publisher", game.build().toByteArray()));
 		
 		return publisher;
 	}
 
 	public byte[] doOperation(String objectRef, String method, byte[] args) throws InvalidProtocolBufferException {
-
 		byte[] data = empacotaMensagem(objectRef, method, args);
 
 		// envio
@@ -66,14 +65,13 @@ public class GreenSteamProxy {
 
 	private byte[] empacotaMensagem(String objectRef, String method, byte[] args) {
 
-		// empacota a Mensagem de requisicao
 		Message message = Message.newBuilder()
-		.setType(0) // Replace with your desired type value
-		.setId(0) // Replace with your desired id value
-		.setObfReference(objectRef)
-		.setMethodId(method)
-		.setArguments(ByteString.copyFrom(args))
-		.build();
+			.setType(0)
+			.setId(0)
+			.setObfReference(objectRef)
+			.setMethodId(method)
+			.setArguments(ByteString.copyFrom(args))
+			.build();
 
         return message.toByteArray();
 
