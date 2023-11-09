@@ -2,6 +2,7 @@ package com.greensteam;
 
 import java.io.IOException;
 import java.net.*;
+import java.util.*;
 
 public class UDPClient {
 
@@ -33,7 +34,9 @@ public class UDPClient {
         try {
             DatagramPacket receivePacket = new DatagramPacket(buffer, buffer.length);
             socket.receive(receivePacket);
-            return receivePacket.getData();
+            byte[] data = receivePacket.getData();
+            return Arrays.copyOf(data, receivePacket.getLength());
+           
         } catch (IOException e) {
             e.printStackTrace();
         }

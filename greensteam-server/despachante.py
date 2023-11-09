@@ -8,6 +8,12 @@ class Despachante:
 
         methodId = msg.methodId
         if methodId == "get_publisher":
-            return esqueleto.getPublisher(msg)
+            reply = Message.Message()
+            reply.type = 1
+            reply.id = msg.id
+            reply.obfReference = msg.obfReference
+            reply.methodId = msg.methodId
+            reply.arguments = esqueleto.getPublisher(msg)
+            return reply.SerializeToString()
         else:
             raise ValueError("Método não encontrado")

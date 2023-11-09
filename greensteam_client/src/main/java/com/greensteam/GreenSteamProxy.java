@@ -10,7 +10,7 @@ import com.greensteam.proto.MessageOuterClass.Publisher;
 import com.greensteam.proto.MessageOuterClass.Game.Builder;
 
 public class GreenSteamProxy {
-    int requestiId = 0;
+    int requestId = 0;
 
 	// O ideal seria solicitar os dados de conexao ao cliente
 	// através de um nome de domínio (ex: www.ufc.br)

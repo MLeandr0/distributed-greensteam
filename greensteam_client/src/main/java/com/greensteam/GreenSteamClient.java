@@ -35,6 +35,8 @@ public class GreenSteamClient {
 			opt = stdin.readLine();
 		} while (opt.equals("\n") || opt.equals("") || opt.isEmpty());
 
+		opt = "Encontrar desenvolvedora";
+
 		switch (opt) {
 		case "Checar atividade":
 
@@ -113,7 +115,7 @@ public class GreenSteamClient {
 			try {
 				operacao = bookClient.selecionaOperacao();
 			} catch (IOException ex) {
-				System.out.println("Escolha uma das operações pelo número");
+				System.out.println("Escolha uma das operações pelo número: " + ex);
 			}
 		} while (!operacao.equals("Finalizar"));
 	}

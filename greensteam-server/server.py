@@ -28,10 +28,9 @@ class Connection:
         self.despachante = despachante.Despachante()
 
     def run(self):
-        try:
-            while True:
-                resultado = self.despachante.dispatch(self.incoming_data)
-                self.send_reply(resultado)
+        try:    
+            resultado = self.despachante.dispatch(self.incoming_data)
+            self.send_reply(resultado)
 
         except Exception as e:
             print(f"Connection: {e}")
@@ -43,7 +42,7 @@ class Connection:
 
     def send_reply(self, response_data):
         # Implemente a lógica para enviar uma resposta ao cliente
-        self.server_socket.send(response_data.encode(), self.client_address)
+        self.server_socket.sendto(response_data, self.client_address)
 
 if __name__ == "__main__":
     server_port = 9090
