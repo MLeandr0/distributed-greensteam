@@ -5,14 +5,12 @@ public class Game {
     private int dowloadQuantity;
     private String description;
     private double reviewsPercentage;
-    private Publisher publisher;
 
-    public Game(String name, int dowloadQuantity, String description, double reviewsPercentage, Publisher publisher) {
+    public Game(String name, int dowloadQuantity, String description, double reviewsPercentage) {
         this.name = name;
         this.dowloadQuantity = dowloadQuantity;
         this.description = description;
         this.reviewsPercentage = reviewsPercentage;
-        this.publisher = publisher;
     }
 
     public String getDescription() {
@@ -25,10 +23,6 @@ public class Game {
 
     public String getName() {
         return name;
-    }
-
-    public Publisher getPublisher() {
-        return publisher;
     }
 
     public double getReviewsPercentage() {
@@ -45,10 +39,6 @@ public class Game {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public void setPublisher(Publisher publisher) {
-        this.publisher = publisher;
     }
 
     public void setReviewsPercentage(double reviewsPercentage) {
