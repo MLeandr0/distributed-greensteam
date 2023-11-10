@@ -54,18 +54,16 @@ public class GreenSteamClient {
 
 		case "Encontrar desenvolvedora":
 
-			System.out.println("\nDecide which game you want to check");
-			System.out.println("1 - The Adventure");
-			System.out.println("2 - The Fall\n");
-			
 			Game.Builder game = Game.newBuilder();
-
-			game.setName("The world of Yario");
+			System.out.print("\nDigite o nome do jogo: ");
+			game.setName(stdin.readLine());
+			//game.setName("The world of Yario");
+			
 			game.setDescription("A game when a snake tries to kill the prince");
 			game.setDownloadQuantity(32000);
 			game.setReviewsPercentage(95);
 
-			System.out.println(proxy.getPublisher(game));
+			System.out.println("\n" + proxy.getPublisher(game));
 
 			/*
 			int gameChoice = Integer.parseInt(stdin.readLine());
