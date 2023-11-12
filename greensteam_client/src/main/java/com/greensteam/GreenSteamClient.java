@@ -4,29 +4,19 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-//import com.greensteam.objects.Game;
-//import com.greensteam.objects.Publisher;
-
 import com.greensteam.proto.MessageOuterClass.Game;
+import com.greensteam.proto.MessageOuterClass.User;
 
 public class GreenSteamClient {
     
     GreenSteamProxy proxy;
-	/*
-	Publisher enixUI;
-	Publisher Bancom;
-	Game theAdventure;
-	Game theFall;	
-	*/
 
 	
 	public GreenSteamClient() {
 		this.proxy = new GreenSteamProxy();
-		//theAdventure = new Game("The adventure", 20000, "A game about an adventure", 75.9);
-		//theFall = new Game("The Fall", 20159, "A game about an adventure", 80.1);
+
 	}
 	
-
     public String selecionaOperacao() throws IOException {
 
 		BufferedReader stdin = new BufferedReader(new InputStreamReader(System.in));
@@ -35,10 +25,19 @@ public class GreenSteamClient {
 			opt = stdin.readLine();
 		} while (opt.equals("\n") || opt.equals("") || opt.isEmpty());
 
-		opt = "Encontrar desenvolvedora";
-
 		switch (opt) {
 		case "Checar atividade":
+
+			User.Builder profile = User.newBuilder();
+			System.out.print("\nDigite o nome do usuário: ");
+			Game.Builder mockedGame = Game.newBuilder();
+
+			profile.setName(stdin.readLine());
+
+			//mocked input
+			profile.setAchievements(10);
+			profile.setBio("Empty");
+			profile.setLibrary(1, mockedGame);
 
 			// Interagir com o usuario via stdin.readLine() para setar
 			// argumentos de entada
@@ -50,6 +49,8 @@ public class GreenSteamClient {
 			// escolhida
 			// proxy.addPerson(person.build());
 
+			System.out.println("\n" + proxy.getLastPlayedGame(profile));
+
 			break;
 
 		case "Encontrar desenvolvedora":
@@ -57,31 +58,30 @@ public class GreenSteamClient {
 			Game.Builder game = Game.newBuilder();
 			System.out.print("\nDigite o nome do jogo: ");
 			game.setName(stdin.readLine());
-			//game.setName("The world of Yario");
 			
+			//mocked input
 			game.setDescription("A game when a snake tries to kill the prince");
 			game.setDownloadQuantity(32000);
 			game.setReviewsPercentage(95);
 
-			System.out.println("\n" + proxy.getPublisher(game));
+			System.out.println("\n" + proxy.getPublisher(game).getName());
 
-			/*
-			int gameChoice = Integer.parseInt(stdin.readLine());
-			if(gameChoice == 1) {
-				System.out.println("\nYeah");
-				System.out.println(theAdventure.getName());
-				proxy.getPublisher(theAdventure);
-			} else if (gameChoice == 2) {
-				System.out.println("\nHell yeah");
-				System.out.println(theFall.getName());
-				proxy.getPublisher(theFall);
-			} else {
-				System.out.println("\nJogo invalido ou inexistente, tente novamente.");
-			}
-			*/
 			break;
 
 		case "Obter avaliações":
+
+			Game.Builder gameReviews = Game.newBuilder();
+			System.out.print("\nDigite o nome do jogo: ");
+
+			gameReviews.setName(stdin.readLine());
+			
+			//mocked input
+			gameReviews.setDescription("A game when a snake tries to kill the prince");
+			gameReviews.setDownloadQuantity(32000);
+			gameReviews.setReviewsPercentage(95);
+
+			System.out.println("\n" + proxy.getReviews(gameReviews));
+			
 			break;
 
 		case "Finalizar":
@@ -105,8 +105,6 @@ public class GreenSteamClient {
 
     public static void main(String[] args) {
 		GreenSteamClient bookClient = new GreenSteamClient();
-		//bookClient.startMockedDataBase();
-		//bookClient.printMenu();
 		String operacao = "empty";
 		do {
 			bookClient.printMenu();
