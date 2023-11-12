@@ -2,14 +2,14 @@ package com.greensteam;
 
 import com.google.protobuf.ByteString;
 import com.google.protobuf.InvalidProtocolBufferException;
-//import com.greensteam.objects.Game;
-//import com.greensteam.objects.Publisher;
 import com.greensteam.proto.MessageOuterClass.Message;
-//import com.greensteam.proto.MessageOuterClass.Game;
 import com.greensteam.proto.MessageOuterClass.Publisher;
-import com.greensteam.proto.MessageOuterClass.Game.Builder;
+import com.greensteam.proto.MessageOuterClass.Game;
+import com.greensteam.proto.MessageOuterClass.User;
+import com.greensteam.proto.MessageOuterClass.Comment;
 
 public class GreenSteamProxy {
+
     int requestId = 0;
 
 	// O ideal seria solicitar os dados de conexao ao cliente
@@ -34,20 +34,27 @@ public class GreenSteamProxy {
 		// (3) Desempacota argumento de resposta (retorno de doOperation)
 		// (4) Retorna reposta desempacotada
 	}
-
-	public String remove(int id, String nomeAgenda) {
-		// (1) Empacota argumentos de entrada
-		// (2) Chama doOperation
-		// (3) Desempacota argumento de resposta (retorno de doOperation)
-		// (4) Retorna reposta desempacotada
-	}
 	*/
 
-	public Publisher getPublisher(Builder game) throws InvalidProtocolBufferException{
+	public Game getLastPlayedGame(User.Builder profile) throws InvalidProtocolBufferException {
+
+		Game game = Game.parseFrom(doOperation("Game", "get_last_played_game", profile.build().toByteArray()));
+
+		return game;
+	}
+
+	public Publisher getPublisher(Game.Builder game) throws InvalidProtocolBufferException{
 		
 		Publisher publisher = Publisher.parseFrom(doOperation("Publisher", "get_publisher", game.build().toByteArray()));
 		
 		return publisher;
+	}
+
+	public Comment getReviews(Game.Builder game) throws InvalidProtocolBufferException{
+		
+		Comment comment = Comment.parseFrom(doOperation("Comment", "get_reviews", game.build().toByteArray()));
+		
+		return comment;
 	}
 
 	public byte[] doOperation(String objectRef, String method, byte[] args) throws InvalidProtocolBufferException {
@@ -79,9 +86,7 @@ public class GreenSteamProxy {
 
 	private Message desempacotaMensagem(byte[] resposta) throws InvalidProtocolBufferException {
 
-		// desempacota a mensagem de resposta
 		return Message.parseFrom(resposta);
 
 	}
-
 }
