@@ -2,6 +2,7 @@ package com.greensteam;
 
 import com.google.protobuf.ByteString;
 import com.google.protobuf.InvalidProtocolBufferException;
+
 import com.greensteam.proto.MessageOuterClass.Message;
 import com.greensteam.proto.MessageOuterClass.Publisher;
 import com.greensteam.proto.MessageOuterClass.Game;
@@ -43,14 +44,14 @@ public class GreenSteamProxy {
 		return game;
 	}
 
-	public Publisher getPublisher(Game.Builder game) throws InvalidProtocolBufferException{
+	public Publisher getPublisher(Game.Builder game) throws InvalidProtocolBufferException {
 		
 		Publisher publisher = Publisher.parseFrom(doOperation("Publisher", "get_publisher", game.build().toByteArray()));
 		
 		return publisher;
 	}
 
-	public Comment getReviews(Game.Builder game) throws InvalidProtocolBufferException{
+	public Comment getReviews(Game.Builder game) throws InvalidProtocolBufferException {
 		
 		Comment comment = Comment.parseFrom(doOperation("Comment", "get_reviews", game.build().toByteArray()));
 		
@@ -67,7 +68,6 @@ public class GreenSteamProxy {
 		Message resposta = desempacotaMensagem(udpClient.getReply());
 
 		return resposta.getArguments().toByteArray();
-
 	}
 
 	private byte[] empacotaMensagem(String objectRef, String method, byte[] args) {
@@ -81,12 +81,10 @@ public class GreenSteamProxy {
 			.build();
 
         return message.toByteArray();
-
 	}
 
 	private Message desempacotaMensagem(byte[] resposta) throws InvalidProtocolBufferException {
 
 		return Message.parseFrom(resposta);
-
 	}
 }
