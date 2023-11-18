@@ -1,9 +1,16 @@
 import servente
-import greenssteam_pb2 as Game
+import greenssteam_pb2
 
 def getPublisher(data):
-    game = Game.Game()
-    game.ParseFromString(data.arguments)
-    reply = servente.getPublisher(game)
+    request = greenssteam_pb2.Game()
+    request.ParseFromString(data.arguments)
+    reply = servente.getPublisher(request)
+    reply.SerializeToString()
+    return reply
 
-    return reply.SerializeToString()
+def getLastPlayedGame(data):
+    request = greenssteam_pb2.User()
+    request.ParseFromString(data.arguments)
+    reply = servente.getLastPlayedGame(request)
+    reply.SerializeToString()
+    return reply

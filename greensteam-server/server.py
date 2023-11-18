@@ -1,6 +1,5 @@
 import socket
 import despachante
-import greenssteam_pb2 as Message
 
 class UDPServer:
     def __init__(self, server_port):
@@ -28,7 +27,8 @@ class Connection:
         self.despachante = despachante.Despachante()
 
     def run(self):
-        try:    
+        try:
+            print("test")
             resultado = self.despachante.dispatch(self.incoming_data)
             self.send_reply(resultado)
 
