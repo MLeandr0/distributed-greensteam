@@ -37,7 +37,7 @@ public class GreenSteamClient {
 			//mocked input
 			profile.setAchievements(10);
 			profile.setBio("Empty");
-			profile.setLibrary(1, mockedGame);
+			profile.addLibrary(mockedGame);
 
 			// Interagir com o usuario via stdin.readLine() para setar
 			// argumentos de entada
