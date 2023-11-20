@@ -4,8 +4,8 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-import com.greensteam.proto.MessageOuterClass.Game;
-import com.greensteam.proto.MessageOuterClass.User;
+import com.greensteam.proto.Greensteam.Game;
+import com.greensteam.proto.Greensteam.User;
 
 public class GreenSteamClient {
     
