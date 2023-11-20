@@ -1,5 +1,5 @@
 import esqueleto
-import greenssteam_pb2 as Message
+import greensteam_pb2 as Message
 
 class Despachante:
     def dispatch(self, request):

@@ -1,6 +1,6 @@
 import socket
 import despachante
-import greenssteam_pb2 as Message
+import greensteam_pb2 as Message
 
 class UDPServer:
     def __init__(self, server_port):

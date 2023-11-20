@@ -1,6 +1,6 @@
-import greenssteam_pb2 as Game
-import greenssteam_pb2 as User
-import greenssteam_pb2 as Publisher
+import greensteam_pb2 as Game
+import greensteam_pb2 as User
+import greensteam_pb2 as Publisher
 
 
 user = User.User()

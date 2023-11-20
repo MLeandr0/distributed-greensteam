@@ -1,5 +1,5 @@
 import servente
-import greenssteam_pb2 as Game
+import greensteam_pb2 as Game
 
 def getPublisher(data):
     game = Game.Game()
