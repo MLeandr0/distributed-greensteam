@@ -4,8 +4,8 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-import com.greensteam.proto.MessageOuterClass.Game;
-import com.greensteam.proto.MessageOuterClass.User;
+import com.greensteam.proto.Greensteam.Game;
+import com.greensteam.proto.Greensteam.User;
 
 public class GreenSteamClient {
     
@@ -25,6 +25,7 @@ public class GreenSteamClient {
 			opt = stdin.readLine();
 		} while (opt.equals("\n") || opt.equals("") || opt.isEmpty());
 
+		opt = "Obter avaliações";
 		switch (opt) {
 		case "Checar atividade":
 
@@ -37,7 +38,7 @@ public class GreenSteamClient {
 			//mocked input
 			profile.setAchievements(10);
 			profile.setBio("Empty");
-			profile.setLibrary(1, mockedGame);
+			profile.addLibrary(mockedGame);
 
 			// Interagir com o usuario via stdin.readLine() para setar
 			// argumentos de entada
@@ -74,6 +75,8 @@ public class GreenSteamClient {
 			System.out.print("\nDigite o nome do jogo: ");
 
 			gameReviews.setName(stdin.readLine());
+			gameReviews.setName("Yario");
+
 			
 			//mocked input
 			gameReviews.setDescription("A game when a snake tries to kill the prince");

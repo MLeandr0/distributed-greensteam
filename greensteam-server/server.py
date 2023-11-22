@@ -28,7 +28,6 @@ class Connection:
 
     def run(self):
         try:
-            print("test")
             resultado = self.despachante.dispatch(self.incoming_data)
             self.send_reply(resultado)
 
@@ -41,7 +40,7 @@ class Connection:
 
 
     def send_reply(self, response_data):
-        # Implemente a lógica para enviar uma resposta ao cliente
+        
         self.server_socket.sendto(response_data, self.client_address)
 
 if __name__ == "__main__":

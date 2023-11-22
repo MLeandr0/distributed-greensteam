@@ -2,12 +2,12 @@ package com.greensteam;
 
 import com.google.protobuf.ByteString;
 import com.google.protobuf.InvalidProtocolBufferException;
-
-import com.greensteam.proto.MessageOuterClass.Message;
-import com.greensteam.proto.MessageOuterClass.Publisher;
-import com.greensteam.proto.MessageOuterClass.Game;
-import com.greensteam.proto.MessageOuterClass.User;
-import com.greensteam.proto.MessageOuterClass.Comment;
+import com.greensteam.proto.Greensteam.Comment;
+import com.greensteam.proto.Greensteam.Game;
+import com.greensteam.proto.Greensteam.Message;
+import com.greensteam.proto.Greensteam.Publisher;
+import com.greensteam.proto.Greensteam.Reviews;
+import com.greensteam.proto.Greensteam.User;
 
 public class GreenSteamProxy {
 
@@ -51,11 +51,11 @@ public class GreenSteamProxy {
 		return publisher;
 	}
 
-	public Comment getReviews(Game.Builder game) throws InvalidProtocolBufferException {
+	public Reviews getReviews(Game.Builder game) throws InvalidProtocolBufferException {
 		
-		Comment comment = Comment.parseFrom(doOperation("Comment", "get_reviews", game.build().toByteArray()));
+		Reviews reviews = Reviews.parseFrom(doOperation("Comment", "get_reviews", game.build().toByteArray()));
 		
-		return comment;
+		return reviews;
 	}
 
 	public byte[] doOperation(String objectRef, String method, byte[] args) throws InvalidProtocolBufferException {

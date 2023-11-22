@@ -1,12 +1,10 @@
 import esqueleto
-import greenssteam_pb2 as Message
+import greensteam_pb2 as Message
 
 class Despachante:
     def dispatch(self, request):
         msg = Message.Message()
         msg.ParseFromString(request)
-        print("test")
-
         methodId = msg.methodId
         reply = Message.Message()
         reply.type = 1
@@ -17,6 +15,10 @@ class Despachante:
             reply.arguments = esqueleto.getPublisher(msg)
             return reply.SerializeToString()
         elif methodId == "get_last_played_game":
-            reply.arguments = esqueleto.getLastPlayedGame
+            reply.arguments = esqueleto.getLastPlayedGame(msg)
+            return reply.SerializeToString()
+        elif methodId == "get_reviews":
+            reply.arguments = esqueleto.getReviews(msg)
+            return reply.SerializeToString()
         else:
             raise ValueError("Método não encontrado")
