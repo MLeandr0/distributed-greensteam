@@ -25,6 +25,7 @@ public class GreenSteamClient {
 			opt = stdin.readLine();
 		} while (opt.equals("\n") || opt.equals("") || opt.isEmpty());
 
+		opt = "Obter avaliações";
 		switch (opt) {
 		case "Checar atividade":
 
@@ -74,6 +75,8 @@ public class GreenSteamClient {
 			System.out.print("\nDigite o nome do jogo: ");
 
 			gameReviews.setName(stdin.readLine());
+			gameReviews.setName("Yario");
+
 			
 			//mocked input
 			gameReviews.setDescription("A game when a snake tries to kill the prince");
