@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-option java_multiple_files = true;
+option java_package = "com.greensteam.proto";
 
 message Game {
     string name = 1;
@@ -27,7 +27,6 @@ message Comment {
     bool recomendation = 2;
     string content = 3;
 }
-
 
 message Message {
     int32 type = 1;
