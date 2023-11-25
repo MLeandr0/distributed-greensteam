@@ -40,7 +40,6 @@ class Connection:
 
 
     def send_reply(self, response_data):
-        
         self.server_socket.sendto(response_data, self.client_address)
 
 if __name__ == "__main__":
