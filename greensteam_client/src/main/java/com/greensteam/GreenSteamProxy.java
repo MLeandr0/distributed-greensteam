@@ -57,7 +57,7 @@ public class GreenSteamProxy {
 		int attempt = 0;
 		byte[] data = empacotaMensagem(objectRef, method, args);
 
-		while (attempt < 5) {
+		while (attempt++ < 5) {
 			try {
 				// Send the request
 				udpClient.sendRequest(data);
@@ -78,8 +78,6 @@ public class GreenSteamProxy {
 			} catch (InvalidProtocolBufferException e) {
 				e.printStackTrace();  // Handle the exception according to your needs
 			}
-
-			attempt++;
 		}
 
 		throw new RuntimeException("Operation couldn't be completed after 5 attempts.");
@@ -89,7 +87,7 @@ public class GreenSteamProxy {
 
 		Message message = Message.newBuilder()
 			.setType(0)
-			.setId(0)
+			.setId(this.requestId++)
 			.setObfReference(objectRef)
 			.setMethodId(method)
 			.setArguments(ByteString.copyFrom(args))
