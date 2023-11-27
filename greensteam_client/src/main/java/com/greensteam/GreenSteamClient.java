@@ -38,18 +38,12 @@ public class GreenSteamClient {
 			profile.setBio("Empty");
 			profile.addLibrary(mockedGame);
 
-			// Interagir com o usuario via stdin.readLine() para setar
-			// argumentos de entada
-			// ex:
-			// System.out.println("Digite seu nome: ");
-			// person.setName(stdin.readLine());
-
-			// Por fim, chamar metodo do proxy correspondente à operação
-			// escolhida
-			// proxy.addPerson(person.build());
-
-			System.out.println("\n" + proxy.getLastPlayedGame(profile));
-
+			try {
+				System.out.println("\n" + proxy.getLastPlayedGame(profile));
+			} catch (RuntimeException e) {
+				System.out.println(e.getMessage());
+			}
+			
 			break;
 
 		case "Encontrar desenvolvedora":
@@ -63,7 +57,11 @@ public class GreenSteamClient {
 			game.setDownloadQuantity(32000);
 			game.setReviewsPercentage(95);
 
-			System.out.println("\n" + proxy.getPublisher(game).getName());
+			try {
+				System.out.println("\n" + proxy.getPublisher(game).getName());
+			} catch (RuntimeException e) {
+				System.out.println(e.getMessage());
+			}
 
 			break;
 
@@ -79,12 +77,15 @@ public class GreenSteamClient {
 			gameReviews.setDownloadQuantity(32000);
 			gameReviews.setReviewsPercentage(95);
 
-			System.out.println("\n" + proxy.getReviews(gameReviews));
+			try {
+				System.out.println("\n" + proxy.getReviews(gameReviews));
+			} catch (RuntimeException e) {
+				System.out.println(e.getMessage());
+			}
 			
 			break;
 
 		case "Finalizar":
-			//proxy.finaliza();
 			break;
 
 		default:
@@ -103,13 +104,14 @@ public class GreenSteamClient {
 	}
 
     public static void main(String[] args) {
-		GreenSteamClient bookClient = new GreenSteamClient();
+		GreenSteamClient greenSteamClient = new GreenSteamClient();
 		String operacao = "empty";
 		do {
-			bookClient.printMenu();
+			greenSteamClient.printMenu();
 			try {
-				operacao = bookClient.selecionaOperacao();
+				operacao = greenSteamClient.selecionaOperacao();
 			} catch (IOException ex) {
+				ex.printStackTrace();
 				System.out.println("Escolha uma das operações pelo número: " + ex);
 			}
 		} while (!operacao.equals("Finalizar"));

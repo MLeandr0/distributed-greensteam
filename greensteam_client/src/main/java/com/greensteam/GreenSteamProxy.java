@@ -2,7 +2,6 @@ package com.greensteam;
 
 import com.google.protobuf.ByteString;
 import com.google.protobuf.InvalidProtocolBufferException;
-import com.greensteam.proto.Greensteam.Comment;
 import com.greensteam.proto.Greensteam.Game;
 import com.greensteam.proto.Greensteam.Message;
 import com.greensteam.proto.Greensteam.Publisher;
@@ -17,25 +16,6 @@ public class GreenSteamProxy {
 	// através de um nome de domínio (ex: www.ufc.br)
 	//UDPClient udpClient = new UDPClient("localhost", 7896);
 	UDPClient udpClient = new UDPClient("localhost", 9090);
-
-	/*
-	public AddressBook list(String nomeAgenda) {
-		// (1) Empacota argumentos de entrada (ex: nomeAgenda)
-		// (2) Chama doOperation
-		// (3) Desempacota argumento de resposta (retorno de doOperation)
-		// (4) Retorna reposta desempacotada
-		// ex:
-		// addressBook = AddressBook.parseFrom(doOperation("AddressBook",
-		// "list", listPessoa.build().toByteArray()));
-	}
-
-	public String addPerson(Person person) {
-		// (1) Empacota argumentos de entrada
-		// (2) Chama doOperation
-		// (3) Desempacota argumento de resposta (retorno de doOperation)
-		// (4) Retorna reposta desempacotada
-	}
-	*/
 
 	public Game getLastPlayedGame(User.Builder profile) throws InvalidProtocolBufferException {
 
@@ -66,6 +46,11 @@ public class GreenSteamProxy {
 
 		// recebimento
 		Message resposta = desempacotaMensagem(udpClient.getReply());
+
+		// checagem de error
+		if (!resposta.getError().getError().equals("")) {
+			throw new RuntimeException(resposta.getError().getError());
+		}
 
 		return resposta.getArguments().toByteArray();
 	}

@@ -12,6 +12,7 @@ class Despachante:
         reply.id = msg.id
         reply.obfReference = msg.obfReference
         reply.methodId = msg.methodId
+
         try:
             if methodId == "get_publisher":
                 reply.arguments = esqueleto.getPublisher(msg)
@@ -23,8 +24,7 @@ class Despachante:
                 reply.arguments = esqueleto.getReviews(msg)
                 return reply.SerializeToString()
         except ValueError as error:
-            errorObj = Error.Error()
-            errorObj.error = str(error)
-            return errorObj.SerializeToString()
+            reply.error.error = str(error)
+            return reply.SerializeToString()
 
                     
