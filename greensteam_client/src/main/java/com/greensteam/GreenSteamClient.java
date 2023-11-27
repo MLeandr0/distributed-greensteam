@@ -24,7 +24,6 @@ public class GreenSteamClient {
 		do {
 			opt = stdin.readLine();
 		} while (opt.equals("\n") || opt.equals("") || opt.isEmpty());
-
 		switch (opt) {
 		case "Checar atividade":
 
