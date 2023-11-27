@@ -38,7 +38,7 @@ def getPublisher(game) -> Publisher:
     for publisher in publishers:
         if game.name in [x.name for x in publisher.games]:
             return publisher
-    return None
+    raise ValueError("Publisher not found")
 
 
 def getLastPlayedGame(name) -> Game:
@@ -46,10 +46,11 @@ def getLastPlayedGame(name) -> Game:
         if(user.name == name):
             userGames = user.library
             return userGames[-1]
-    return None           
+    raise ValueError("User not found")
+
 
 def getReviews(name) -> Reviews:
     for game in games:
         if(name == game.name):
             return game.reviews
-    return None
+    raise ValueError("Game not found")
