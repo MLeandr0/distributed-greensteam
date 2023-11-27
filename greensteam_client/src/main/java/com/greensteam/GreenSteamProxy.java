@@ -1,5 +1,6 @@
 package com.greensteam;
 
+import java.net.SocketTimeoutException;
 import com.google.protobuf.ByteString;
 import com.google.protobuf.InvalidProtocolBufferException;
 import com.greensteam.proto.Greensteam.Game;
@@ -11,10 +12,6 @@ import com.greensteam.proto.Greensteam.User;
 public class GreenSteamProxy {
 
     int requestId = 0;
-
-	// O ideal seria solicitar os dados de conexao ao cliente
-	// através de um nome de domínio (ex: www.ufc.br)
-	//UDPClient udpClient = new UDPClient("localhost", 7896);
 	UDPClient udpClient = new UDPClient("localhost", 9090);
 
 	public Game getLastPlayedGame(User.Builder profile) throws InvalidProtocolBufferException {
@@ -39,6 +36,8 @@ public class GreenSteamProxy {
 	}
 
 	public byte[] doOperation(String objectRef, String method, byte[] args) throws InvalidProtocolBufferException {
+	
+		/*
 		byte[] data = empacotaMensagem(objectRef, method, args);
 
 		// envio
@@ -47,12 +46,43 @@ public class GreenSteamProxy {
 		// recebimento
 		Message resposta = desempacotaMensagem(udpClient.getReply());
 
-		// checagem de error
+		// checagem de
 		if (!resposta.getError().getError().equals("")) {
 			throw new RuntimeException(resposta.getError().getError());
 		}
 
 		return resposta.getArguments().toByteArray();
+		*/
+		
+		int attempt = 0;
+		byte[] data = empacotaMensagem(objectRef, method, args);
+
+		while (attempt < 5) {
+			try {
+				// Send the request
+				udpClient.sendRequest(data);
+
+				// Receive the response
+				Message resposta = desempacotaMensagem(udpClient.getReply());
+
+				// Check for errors in the response
+				if (!resposta.getError().getError().equals("")) {
+					throw new RuntimeException(resposta.getError().getError());
+				}
+
+				return resposta.getArguments().toByteArray();
+
+			} catch (SocketTimeoutException ste) {
+				System.out.println("Socket timeout occurred. Retrying...");
+
+			} catch (InvalidProtocolBufferException e) {
+				e.printStackTrace();  // Handle the exception according to your needs
+			}
+
+			attempt++;
+		}
+
+		throw new RuntimeException("Operation couldn't be completed after 5 attempts.");
 	}
 
 	private byte[] empacotaMensagem(String objectRef, String method, byte[] args) {
