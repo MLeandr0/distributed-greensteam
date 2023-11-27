@@ -9,7 +9,7 @@ def getPublisher(data):
         reply = servente.getPublisher(request)
         return reply.SerializeToString()
     except ValueError as error:
-        raise ValueError(error)
+        raise error
 
 
 def getLastPlayedGame(data):
@@ -19,7 +19,7 @@ def getLastPlayedGame(data):
         reply = servente.getLastPlayedGame(request.name)
         return reply.SerializeToString()
     except ValueError as error:
-        raise ValueError(error)
+        raise error
 
 def getReviews(data):
     request = Game.Game()
@@ -28,4 +28,4 @@ def getReviews(data):
         reply = servente.getReviews(request.name)
         return reply.SerializeToString()
     except ValueError as error:
-        raise ValueError(error)
+        raise error
