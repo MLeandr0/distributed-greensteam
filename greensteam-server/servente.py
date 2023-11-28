@@ -1,41 +1,65 @@
-import os
-import greenssteam_pb2   
+import greensteam_pb2 as Game
+import greensteam_pb2 as User
+import greensteam_pb2 as Publisher
+import greensteam_pb2 as Comment
+import greensteam_pb2 as Reviews
 
-class Game:
-    def __init__(self, name, description, downloadQuantity, reviewsPercentage):
-        self.name = name
-        self.description = description
-        self.downloadQuantity = downloadQuantity
-        self.reviewsPercentage = reviewsPercentage
+user = User.User()
+user.name = "Ataraxia"
+user2 = User.User()
+user2.name = "Hugo"
 
-class User:
-    def __init__(self, name, bio, library, achievements):
-        self.name = name
-        self.bio = bio
-        self.library = library
-        self.achievements = achievements
+game = Game.Game()
+game.name = "Yario"
 
-class Publisher:
-    def __init__(self, name, followers, games):
-        self.name = name
-        self.followers = followers
-        self.games = games
+comment = Comment.Comment()
+comment.content = "Bom demai"
+comment.authorName = "hugo"
+comment.recomendation = True
 
-game1 = Game("Jogo 1", "Descrição do Jogo 1", 1000, 90)
-game2 = Game("Jogo 2", "Descrição do Jogo 2", 500, 85)
-game3 = Game("Jogo 3", "Descrição do Jogo 3", 2000, 95)
+game.reviews.comments.append(comment)
 
-user1 = User("Usuário 1", "Bio do Usuário 1", [game1, game2], 10)
-user2 = User("Usuário 2", "Bio do Usuário 2", [game2, game3], 5)
+game2 = Game.Game()
+game2.name = "RORR"
+user.library.append(game)
+user.library.append(game2)
+userGames = user.library
+users = [user, user2]
 
-publisher1 = Publisher("Publisher 1", [user1, user2], [game1, game2])
-publisher2 = Publisher("Publisher 2", [user2], [game3])
+publisher = Publisher.Publisher()
+publisher.name = "Intendo"
+publisher.followers = 200000
+publisher.games.append(game)
+publishers = [publisher]
 
-publishers = [publisher1, publisher2]
+games = []
+games.append(game)
+games.append(game2)
 
 def getPublisher(game) -> Publisher:
     for publisher in publishers:
-        if game in publisher.games:
-            return publisher  
-    return None
-            
+        if game.name in [x.name for x in publisher.games]:
+            return publisher
+    raise ValueError("Game not found")
+
+
+def getLastPlayedGame(name) -> Game:
+    for user in users:
+        if(user.name == name):
+            userGames = user.library
+            if(userGames):
+                return userGames[-1]
+            else:
+                raise ValueError( name + " library is empty")
+    raise ValueError("User not found")
+
+
+def getReviews(name) -> Reviews:
+    for game in games:
+        if(name == game.name):
+            comments = game.reviews.comments
+            if(comments):
+                return game.reviews
+            else:
+                raise ValueError( name + " don't have reviews")
+    raise ValueError("Game not found")

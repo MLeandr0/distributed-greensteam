@@ -2,6 +2,7 @@ package com.greensteam;
 
 import java.io.IOException;
 import java.net.*;
+import java.util.*;
 
 public class UDPClient {
 
@@ -28,15 +29,24 @@ public class UDPClient {
         }
     }
 
-    public byte[] getReply() {
+    public byte[] getReply() throws SocketTimeoutException {
         byte[] buffer = new byte[1024];
+
         try {
             DatagramPacket receivePacket = new DatagramPacket(buffer, buffer.length);
+            socket.setSoTimeout(5000);
             socket.receive(receivePacket);
-            return receivePacket.getData();
-        } catch (IOException e) {
+            byte[] data = receivePacket.getData();
+            return Arrays.copyOf(data, receivePacket.getLength());
+
+        } catch (SocketTimeoutException ste) {
+            throw ste;
+
+        } catch (IOException e ) {
             e.printStackTrace();
+
         }
+
         return null;
     }
 

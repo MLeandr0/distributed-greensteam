@@ -1,12 +1,13 @@
 syntax = "proto3";
 
-option java_multiple_files = true;
+option java_package = "com.greensteam.proto";
 
 message Game {
     string name = 1;
     int32 downloadQuantity = 2;
     string description = 3;
-    int32 reviewsPercentage = 5;
+    int32 reviewsPercentage = 4;
+    Reviews reviews = 5;
 }
 
 message Publisher {
@@ -28,11 +29,19 @@ message Comment {
     string content = 3;
 }
 
-
 message Message {
     int32 type = 1;
     int32 id = 2;
     string obfReference = 3; //Objeto remoto
     string methodId = 4; //Metodo remoto
     bytes arguments = 5;
+    Error error = 6;
+}
+
+message Reviews {
+    repeated Comment comments = 1;
+}
+
+message Error {
+    string error = 1;
 }

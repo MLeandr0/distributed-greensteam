@@ -1,51 +1,43 @@
 package com.greensteam;
 
+import java.net.SocketTimeoutException;
 import com.google.protobuf.ByteString;
 import com.google.protobuf.InvalidProtocolBufferException;
-import com.greensteam.objects.Game;
-import com.greensteam.objects.Publisher;
-import com.greensteam.proto.MessageOuterClass.Message;;
+import com.greensteam.proto.Greensteam.Game;
+import com.greensteam.proto.Greensteam.Message;
+import com.greensteam.proto.Greensteam.Publisher;
+import com.greensteam.proto.Greensteam.Reviews;
+import com.greensteam.proto.Greensteam.User;
 
 public class GreenSteamProxy {
-    int requestiId = 0;
 
-	// O ideal seria solicitar os dados de conexao ao cliente
-	// através de um nome de domínio (ex: www.ufc.br)
-	UDPClient udpClient = new UDPClient("localhost", 7896);
+    int requestId = 0;
+	UDPClient udpClient = new UDPClient("localhost", 9090);
 
-	/*
-	public AddressBook list(String nomeAgenda) {
-		// (1) Empacota argumentos de entrada (ex: nomeAgenda)
-		// (2) Chama doOperation
-		// (3) Desempacota argumento de resposta (retorno de doOperation)
-		// (4) Retorna reposta desempacotada
-		// ex:
-		// addressBook = AddressBook.parseFrom(doOperation("AddressBook",
-		// "list", listPessoa.build().toByteArray()));
+	public Game getLastPlayedGame(User.Builder profile) throws InvalidProtocolBufferException {
+
+		Game game = Game.parseFrom(doOperation("Game", "get_last_played_game", profile.build().toByteArray()));
+
+		return game;
 	}
 
-	public String addPerson(Person person) {
-		// (1) Empacota argumentos de entrada
-		// (2) Chama doOperation
-		// (3) Desempacota argumento de resposta (retorno de doOperation)
-		// (4) Retorna reposta desempacotada
-	}
-
-	public String remove(int id, String nomeAgenda) {
-		// (1) Empacota argumentos de entrada
-		// (2) Chama doOperation
-		// (3) Desempacota argumento de resposta (retorno de doOperation)
-		// (4) Retorna reposta desempacotada
-	}
-	*/
-
-	public Publisher getPublisher(Game game) throws InvalidProtocolBufferException{
-		Publisher publisher = Publisher.parseFrom(doOperation("Publisher", "checar", game.toByteArray()));
+	public Publisher getPublisher(Game.Builder game) throws InvalidProtocolBufferException {
+		
+		Publisher publisher = Publisher.parseFrom(doOperation("Publisher", "get_publisher", game.build().toByteArray()));
+		
 		return publisher;
 	}
 
-	public byte[] doOperation(String objectRef, String method, byte[] args) throws InvalidProtocolBufferException {
+	public Reviews getReviews(Game.Builder game) throws InvalidProtocolBufferException {
+		
+		Reviews reviews = Reviews.parseFrom(doOperation("Comment", "get_reviews", game.build().toByteArray()));
+		
+		return reviews;
+	}
 
+	public byte[] doOperation(String objectRef, String method, byte[] args) throws InvalidProtocolBufferException {
+	
+		/*
 		byte[] data = empacotaMensagem(objectRef, method, args);
 
 		// envio
@@ -54,30 +46,58 @@ public class GreenSteamProxy {
 		// recebimento
 		Message resposta = desempacotaMensagem(udpClient.getReply());
 
-		return resposta.getArguments().toByteArray();
+		// checagem de
+		if (!resposta.getError().getError().equals("")) {
+			throw new RuntimeException(resposta.getError().getError());
+		}
 
+		return resposta.getArguments().toByteArray();
+		*/
+		
+		int attempt = 0;
+		byte[] data = empacotaMensagem(objectRef, method, args);
+
+		while (attempt++ < 5) {
+			try {
+				// Send the request
+				udpClient.sendRequest(data);
+
+				// Receive the response
+				Message resposta = desempacotaMensagem(udpClient.getReply());
+
+				// Check for errors in the response
+				if (!resposta.getError().getError().equals("")) {
+					throw new RuntimeException(resposta.getError().getError());
+				}
+
+				return resposta.getArguments().toByteArray();
+
+			} catch (SocketTimeoutException ste) {
+				System.out.println("Socket timeout occurred. Retrying...");
+
+			} catch (InvalidProtocolBufferException e) {
+				e.printStackTrace();  // Handle the exception according to your needs
+			}
+		}
+
+		throw new RuntimeException("Operation couldn't be completed after 5 attempts.");
 	}
 
 	private byte[] empacotaMensagem(String objectRef, String method, byte[] args) {
 
-		// empacota a Mensagem de requisicao
 		Message message = Message.newBuilder()
-		.setType(0) // Replace with your desired type value
-		.setId(0) // Replace with your desired id value
-		.setObfReference(objectRef)
-		.setMethodId(method)
-		.setArguments(ByteString.copyFrom(args))
-		.build();
+			.setType(0)
+			.setId(this.requestId++)
+			.setObfReference(objectRef)
+			.setMethodId(method)
+			.setArguments(ByteString.copyFrom(args))
+			.build();
 
         return message.toByteArray();
-
 	}
 
 	private Message desempacotaMensagem(byte[] resposta) throws InvalidProtocolBufferException {
 
-		// desempacota a mensagem de resposta
 		return Message.parseFrom(resposta);
-
 	}
-
 }
