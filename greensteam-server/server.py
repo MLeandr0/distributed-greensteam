@@ -25,7 +25,7 @@ class Connection:
     last_id = -1
 
     def __init__(self, server_socket, client_address, data):
-        self.is_test_server = True
+        self.is_test_server = False
         self.incoming_data = data
         self.server_socket = server_socket
         self.client_address = client_address
@@ -35,7 +35,6 @@ class Connection:
         try:
             msg = Message.Message()
             msg.ParseFromString(self.incoming_data)
-            print(Connection.last_id)
             if(Connection.last_id == msg.id):
                 print("Duplicated Request")
             else:
