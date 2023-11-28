@@ -35,7 +35,7 @@ public class GreenSteamClient {
 
 			try {
 				Game activity = proxy.getLastPlayedGame(profile);
-				double reviewsPercentage = activity.getReviewsPercentage() * 100;
+				double reviewsPercentage = activity.getReviewsPercentage();
 
 				System.out.println("\nUltimo jogo jogado: " + activity.getName());
 				System.out.println("Descrição do jogo: " + activity.getDescription());
