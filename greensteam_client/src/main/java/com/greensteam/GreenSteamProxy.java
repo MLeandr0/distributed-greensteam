@@ -36,36 +36,16 @@ public class GreenSteamProxy {
 	}
 
 	public byte[] doOperation(String objectRef, String method, byte[] args) throws InvalidProtocolBufferException {
-	
-		/*
-		byte[] data = empacotaMensagem(objectRef, method, args);
-
-		// envio
-		udpClient.sendRequest(data);
-
-		// recebimento
-		Message resposta = desempacotaMensagem(udpClient.getReply());
-
-		// checagem de
-		if (!resposta.getError().getError().equals("")) {
-			throw new RuntimeException(resposta.getError().getError());
-		}
-
-		return resposta.getArguments().toByteArray();
-		*/
 		
 		int attempt = 0;
 		byte[] data = empacotaMensagem(objectRef, method, args);
 
 		while (attempt++ < 5) {
 			try {
-				// Send the request
 				udpClient.sendRequest(data);
 
-				// Receive the response
 				Message resposta = desempacotaMensagem(udpClient.getReply());
 
-				// Check for errors in the response
 				if (!resposta.getError().getError().equals("")) {
 					throw new RuntimeException(resposta.getError().getError());
 				}
@@ -76,7 +56,7 @@ public class GreenSteamProxy {
 				System.out.println("Socket timeout occurred. Retrying...");
 
 			} catch (InvalidProtocolBufferException e) {
-				e.printStackTrace();  // Handle the exception according to your needs
+				e.printStackTrace();
 			}
 		}
 

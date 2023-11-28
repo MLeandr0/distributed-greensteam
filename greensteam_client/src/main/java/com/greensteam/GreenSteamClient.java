@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 import com.greensteam.proto.Greensteam.Game;
+import com.greensteam.proto.Greensteam.Reviews;
 import com.greensteam.proto.Greensteam.User;
 
 public class GreenSteamClient {
@@ -29,17 +30,18 @@ public class GreenSteamClient {
 
 			User.Builder profile = User.newBuilder();
 			System.out.print("\nDigite o nome do usuário: ");
-			Game.Builder mockedGame = Game.newBuilder();
 
 			profile.setName(stdin.readLine());
 
-			//mocked input
-			profile.setAchievements(10);
-			profile.setBio("Empty");
-			profile.addLibrary(mockedGame);
-
 			try {
-				System.out.println("\n" + proxy.getLastPlayedGame(profile));
+				Game activity = proxy.getLastPlayedGame(profile);
+				double reviewsPercentage = activity.getReviewsPercentage() * 100;
+
+				System.out.println("\nUltimo jogo jogado: " + activity.getName());
+				System.out.println("Descrição do jogo: " + activity.getDescription());
+				System.out.println("Quantidade de downloads: " + activity.getDownloadQuantity());
+				System.out.println("Metacritc: " + reviewsPercentage);
+
 			} catch (RuntimeException e) {
 				System.out.println(e.getMessage());
 			}
@@ -52,13 +54,12 @@ public class GreenSteamClient {
 			System.out.print("\nDigite o nome do jogo: ");
 			game.setName(stdin.readLine());
 			
-			//mocked input
-			game.setDescription("A game when a snake tries to kill the prince");
-			game.setDownloadQuantity(32000);
-			game.setReviewsPercentage(95);
 
 			try {
-				System.out.println("\n" + proxy.getPublisher(game).getName());
+				com.greensteam.proto.Greensteam.Publisher pub = proxy.getPublisher(game);
+				System.out.println("\nNome da Empresa: " + pub.getName());
+				System.out.println("Quantidade de seguidores: " + pub.getFollowers());
+
 			} catch (RuntimeException e) {
 				System.out.println(e.getMessage());
 			}
@@ -72,13 +73,17 @@ public class GreenSteamClient {
 
 			gameReviews.setName(stdin.readLine());
 			
-			//mocked input
-			gameReviews.setDescription("A game when a snake tries to kill the prince");
-			gameReviews.setDownloadQuantity(32000);
-			gameReviews.setReviewsPercentage(95);
-
 			try {
-				System.out.println("\n" + proxy.getReviews(gameReviews));
+				Reviews review = proxy.getReviews(gameReviews);
+				int size = review.getCommentsList().size();
+
+				System.out.println("\nAvaliações:");
+				for(int i = 0; i < size; i++) {
+					System.out.println("Autor: " + review.getComments(i).getAuthorName());
+					System.out.println("Avaliação: " + review.getComments(i).getContent());
+					System.out.println("Recomendação: " + (review.getComments(i).getRecomendation() ? "Recomendo" : "Não recomendo"));
+				}
+
 			} catch (RuntimeException e) {
 				System.out.println(e.getMessage());
 			}
