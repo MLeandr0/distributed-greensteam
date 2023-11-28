@@ -34,7 +34,7 @@ public class UDPClient {
 
         try {
             DatagramPacket receivePacket = new DatagramPacket(buffer, buffer.length);
-            socket.setSoTimeout(5000);
+            socket.setSoTimeout(1000);
             socket.receive(receivePacket);
             byte[] data = receivePacket.getData();
             return Arrays.copyOf(data, receivePacket.getLength());
