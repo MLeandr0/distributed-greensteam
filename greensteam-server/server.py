@@ -1,6 +1,7 @@
 import socket
 import despachante
 import greensteam_pb2 as Message
+import random
 
 class UDPServer:
 
@@ -23,9 +24,10 @@ class UDPServer:
 
 class Connection:    
     last_id = -1
+    last_result = Message.Message()
 
     def __init__(self, server_socket, client_address, data):
-        self.is_test_server = False
+        self.is_test_server = True
         self.incoming_data = data
         self.server_socket = server_socket
         self.client_address = client_address
@@ -37,11 +39,13 @@ class Connection:
             msg.ParseFromString(self.incoming_data)
             if(Connection.last_id == msg.id):
                 print("Duplicated Request")
+                self.send_reply(Connection.last_result)
             else:
                 Connection.last_id = msg.id
-                if(self.is_test_server): return
                 resultado = self.despachante.dispatch(self.incoming_data)
-                self.send_reply(resultado)
+                Connection.last_result = resultado
+                if(random.randint(1, 100) > 100):
+                    self.send_reply(resultado)
 
         except Exception as e:
             print(f"Connection: {e}")

@@ -14,13 +14,17 @@ game.name = "Yario"
 
 comment = Comment.Comment()
 comment.content = "Bom demai"
-comment.authorName = "hugo"
+comment.authorName = "Hugo"
 comment.recomendation = True
 
 game.reviews.comments.append(comment)
 
 game2 = Game.Game()
 game2.name = "RORR"
+game2.description = "RISK OF REPROVAR"
+game2.downloadQuantity = 10
+game2.reviewsPercentage = 90
+
 user.library.append(game)
 user.library.append(game2)
 userGames = user.library
